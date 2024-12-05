@@ -1,4 +1,4 @@
-# [프로젝트 명] 
+# React-Training
 ## Conventional Commits 스타일 가이드
 
 ## 소개
