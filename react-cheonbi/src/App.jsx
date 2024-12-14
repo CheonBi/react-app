@@ -1,101 +1,68 @@
-import { useState } from 'react'
-import "./styles.css"
-import reactLogo from './assets/react.svg'
-
-const reactDescriptions = ['Fundamental', 'Crucial', 'Core'];
-
-function genRandomInt(max) {
-    return Math.floor(Math.random() * (max + 1));
-}
-
-const content = [
-    [
-        "React is extremely popular",
-        "It makes building complex, interactive UIs a breeze",
-        "It's powerful & flexible",
-        "It has a very active and versatile ecosystem"
-    ],
-    [
-        "Components, JSX & Props",
-        "State",
-        "Hooks (e.g., useEffect())",
-        "Dynamic rendering"
-    ],
-    [
-        "Official web page (react.dev)",
-        "Next.js (Fullstack framework)",
-        "React Native (build native mobile apps with React)"
-    ],
-    [
-        "Vanilla JavaScript requires imperative programming",
-        "Imperative Programming: You define all the steps needed to achieve a result",
-        "React on the other hand embraces declarative programming",
-        "With React, you define the goal and React figures out how to get there"
-    ]
-];
-
-function Header(){
-    const description = reactDescriptions[genRandomInt(2)];
-    return  (
-        <header className="App-header">
-            <h1 className="App-header__title">React Essentials</h1>
-            <p>{description} React concepts you will need for almost any app you are going to build</p>
-        </header>
-    );
-}
+import { useState } from "react";
+import { CORE_CONCEPTS } from "./components/Concepts/data.js";
+import { EXAMPLES } from "./components/Concepts/data.js";
+import Header from "./components/Header/Header.jsx";
+import CoreConcepts from "./components/Concepts/CoreConcepts.jsx";
+import TabButton from "./components/Button/TabButton.jsx";
+import "./index.css";
 
 function App() {
-    const [activeContentIndex, setActiveContentIndex] = useState(0);
+  let tabContent = "Click tabs";
+  const [selectedTopic, setSelectedTopic] = useState();
 
-    return (
-        <div>
-            <header>
-                <img src={reactLogo} alt="React logo" />
+  function handleSelect(selectedButton) {
+    setSelectedTopic(selectedButton);
+  }
 
-                <div>
-                    <h1>React.js</h1>
-                    <p>i.e., using the React library for rendering the UI</p>
-                </div>
-            </header>
-            <Header/>
-
-            <div id="tabs">
-                <menu>
-                    <button
-                        className={activeContentIndex === 0 ? "active" : ""}
-                        onClick={() => setActiveContentIndex(0)}
-                    >
-                        Why React?
-                    </button>
-                    <button
-                        className={activeContentIndex === 1 ? "active" : ""}
-                        onClick={() => setActiveContentIndex(1)}
-                    >
-                        Core Features
-                    </button>
-                    <button
-                        className={activeContentIndex === 2 ? "active" : ""}
-                        onClick={() => setActiveContentIndex(2)}
-                    >
-                        Related Resources
-                    </button>
-                    <button
-                        className={activeContentIndex === 3 ? "active" : ""}
-                        onClick={() => setActiveContentIndex(3)}
-                    >
-                        React vs JS
-                    </button>
-                </menu>
-                <div id="tab-content">
-                    <ul>
-                        {content[activeContentIndex].map((item) => (
-                            <li key={item}>{item}</li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-        </div>
+  if (selectedTopic) {
+    tabContent = (
+      <div id="tab-content">
+        <h3>{EXAMPLES[selectedTopic].title}</h3>
+        <p>{EXAMPLES[selectedTopic].description}</p>
+        <pre>
+          <code>{EXAMPLES[selectedTopic].code}</code>
+        </pre>
+      </div>
     );
+  }
+
+  return (
+    <div>
+      <Header/>
+      <main>
+        <section id="core-concepts">
+          <h2>Core Concepts</h2>
+          <ul>
+            <CoreConcepts {...CORE_CONCEPTS[0]} />
+            <CoreConcepts {...CORE_CONCEPTS[1]} />
+            <CoreConcepts {...CORE_CONCEPTS[2]} />
+            <CoreConcepts {...CORE_CONCEPTS[3]} />
+          </ul>
+        </section>
+        <section id="examples">
+          <h2>Examples</h2>
+          <menu>
+            <TabButton onSelect={() => handleSelect("components")}>
+              Components
+            </TabButton>
+            <TabButton onSelect={() => handleSelect("jsx")}>JSX</TabButton>
+            <TabButton onSelect={() => handleSelect("props")}>Props</TabButton>
+            <TabButton onSelect={() => handleSelect("state")}>State</TabButton>
+          </menu>
+          {tabContent}
+          {/*{!selectedTopic ? (<p>Please select a topic</p>) : (*/}
+          {/*    <div id="tab-content">*/}
+          {/*        <h3>{EXAMPLES[selectedTopic].title}</h3>*/}
+          {/*        <p>{EXAMPLES[selectedTopic].description}</p>*/}
+          {/*        <pre>*/}
+          {/*            <code>{EXAMPLES[selectedTopic].code}</code>*/}
+          {/*        </pre>*/}
+          {/*    </div>*/}
+          {/*)}*/}
+        </section>
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
