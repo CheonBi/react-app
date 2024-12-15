@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { CORE_CONCEPTS } from "./components/Concepts/data.js";
 import { EXAMPLES } from "./components/Concepts/data.js";
 import Header from "./components/Header/Header.jsx";
@@ -27,27 +27,28 @@ function App() {
   }
 
   return (
-    <div>
+    <Fragment>
       <Header/>
       <main>
         <section id="core-concepts">
           <h2>Core Concepts</h2>
           <ul>
-            <CoreConcepts {...CORE_CONCEPTS[0]} />
-            <CoreConcepts {...CORE_CONCEPTS[1]} />
-            <CoreConcepts {...CORE_CONCEPTS[2]} />
-            <CoreConcepts {...CORE_CONCEPTS[3]} />
+            {CORE_CONCEPTS.map((conceptItem) => <CoreConcepts key={conceptItem.title} {...conceptItem} />)}
+            {/*<CoreConcepts {...CORE_CONCEPTS[0]} />*/}
+            {/*<CoreConcepts {...CORE_CONCEPTS[1]} />*/}
+            {/*<CoreConcepts {...CORE_CONCEPTS[2]} />*/}
+            {/*<CoreConcepts {...CORE_CONCEPTS[3]} />*/}
           </ul>
         </section>
         <section id="examples">
           <h2>Examples</h2>
           <menu>
-            <TabButton onSelect={() => handleSelect("components")}>
+            <TabButton isSelected={selectedTopic === 'components'} onSelect={() => handleSelect("components")}>
               Components
             </TabButton>
-            <TabButton onSelect={() => handleSelect("jsx")}>JSX</TabButton>
-            <TabButton onSelect={() => handleSelect("props")}>Props</TabButton>
-            <TabButton onSelect={() => handleSelect("state")}>State</TabButton>
+            <TabButton isSelected={selectedTopic === 'jsx'} onSelect={() => handleSelect("jsx")}>JSX</TabButton>
+            <TabButton isSelected={selectedTopic === 'props'} onSelect={() => handleSelect("props")}>Props</TabButton>
+            <TabButton isSelected={selectedTopic === 'state'} onSelect={() => handleSelect("state")}>State</TabButton>
           </menu>
           {tabContent}
           {/*{!selectedTopic ? (<p>Please select a topic</p>) : (*/}
@@ -61,7 +62,7 @@ function App() {
           {/*)}*/}
         </section>
       </main>
-    </div>
+    </Fragment>
   );
 }
 
